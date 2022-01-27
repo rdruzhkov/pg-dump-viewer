@@ -158,7 +158,7 @@ class MainWindow:
             logging.error('__update_tree_view can\'t find specified table')
 
     def __update_tables_list_box(self):
-        self.__tables_list_box.delete(0, len(self.__tables) - 1)
+        self.__tables_list_box.delete(0, END)
         for table in self.__tables:
             self.__tables_list_box.insert(0, f"{table['namespace']} : {table['name']}")
 
