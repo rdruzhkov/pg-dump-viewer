@@ -72,8 +72,12 @@ class Dump:
     def get_tables(self) -> List[dict]:
         return self.__tables.copy()
 
-    def get_table_columns(self, table: str, namespace: str):
-        pass
+    def get_table_columns(self, table_name: str, namespace: str):
+        for table in self.__tables:
+            if table['name'] == table_name and table['namespace'] == namespace:
+                return table['columns']
+        else:
+            return None
 
     def get_table_data(self, table: str, namespace: str):
         table_data = []
