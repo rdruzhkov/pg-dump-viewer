@@ -1,4 +1,5 @@
 import tkinter
+import uuid
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
@@ -21,6 +22,7 @@ class MainWindow:
 
         self.__root = tkinter.Tk()
         self.__root.minsize(900, 520)
+        self.__root.maxsize(900, 520)
         self.__root.title('Postgres Dump Viewer')
         self.__root.option_add('*tearOff', FALSE)
         self.__root.columnconfigure(3, weight=1)
@@ -120,27 +122,35 @@ class MainWindow:
 
         for table in self.__tables:
             if table['name'] == self.__selected_table_name and table['namespace'] == self.__selected_table_namespace:
+
+                index_column_name = str(uuid.uuid4())
                 self.__tree_view = ttk.Treeview(
                     self.__root,
-                    columns=[column['name'] for column in table['columns']],
+                    columns=[index_column_name] + [column['name'] for column in table['columns']],
                     show='headings',
                     height=25
                 )
                 self.__tree_view.grid(column=1, row=1, columnspan=3, padx=PADDING_X, pady=PADDING_Y, sticky="nsew")
+                self.__tree_view.column(index_column_name, minwidth=50, width=50, stretch=NO)
 
+                self.__tree_view.heading(index_column_name, text='index')
                 for column in table['columns']:
                     self.__tree_view.heading(column['name'], text=column['name'] + ' : ' + column['data_type'])
 
                 table_data = self.__dump.get_table_data(self.__selected_table_name, self.__selected_table_namespace)
+
+                counter = 1
                 for row_data in table_data:
                     if self.__filter_string is not None:
                         for value in row_data:
                             if self.__filter_string in value:
-                                self.__tree_view.insert('', tkinter.END, values=row_data)
+                                self.__tree_view.insert('', tkinter.END, values=(str(counter),) + row_data)
+                                counter += 1
                                 break
 
                     else:
-                        self.__tree_view.insert('', tkinter.END, values=row_data)
+                        self.__tree_view.insert('', tkinter.END, values=(str(counter),) + row_data)
+                        counter += 1
 
                 break
 
