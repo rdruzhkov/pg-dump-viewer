@@ -68,13 +68,15 @@ class MainWindow:
     def __list_box_select_handler(self, evt):
         # Note here that Tkinter passes an event object to onselect()
         w = evt.widget
-        index = int(w.curselection()[0])
-        value = w.get(index)
-        logging.debug(f'Listbox selected value {value}')
+        curselection = w.curselection()
+        if curselection:
+            index = int(curselection[0])
+            value = w.get(index)
+            logging.debug(f'Listbox selected value {value}')
 
-        self.__selected_table_name = self.__tables[index]['name']
-        self.__selected_table_namespace = self.__tables[index]['namespace']
-        self.__update_tree_view()
+            self.__selected_table_name = self.__tables[index]['name']
+            self.__selected_table_namespace = self.__tables[index]['namespace']
+            self.__update_tree_view()
 
     def __button_open_dump_file_handler(self):
         logging.debug('__button_open_dump_file_handler was called')
