@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 import logging
+from typing import Optional
 
 from dump import Dump
 
@@ -14,9 +15,9 @@ PADDING_Y = 3
 class MainWindow:
     def __init__(self):
         self.__dump_file_name = None
-        self.__dump = None
+        self.__dump: Optional[Dump] = None
         self.__tables = None
-        self.__filter_string = None
+        self.__filter_string: Optional[str] = None
         self.__selected_table_name = None
         self.__selected_table_namespace = None
 
