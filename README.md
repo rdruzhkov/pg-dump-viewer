@@ -1,3 +1,6 @@
+# About
+This application allows you to view content of PostgreSQL database dump made with pg_dump utility in custom format.
+
 # Requirements
 - python 3.10
 
